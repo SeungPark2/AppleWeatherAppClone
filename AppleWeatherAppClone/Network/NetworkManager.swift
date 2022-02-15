@@ -25,6 +25,9 @@ public class Network {
     static let shared: Network = Network()
     private init() { }
     
+    private let CONTENT_TYPE: String = "application/json;charset=UTF-8"
+    private let KEY_CONTENT_TYPE: String = "Content-Type"
+    
     private let apiToken: String = "6fce7cc20181de1dc8b881e48c1e38c3"
 }
 
@@ -44,22 +47,37 @@ extension Network: NetworkProtocol {
             return Fail(error: NetworkError.invalidURL).eraseToAnyPublisher()
         }
         
-        return URLSession.shared.dataTaskPublisher(for: url)
+        var URLRequest = URLRequest(url: url)
+        URLRequest.httpMethod = "GET"
+        URLRequest.timeoutInterval = 30
+        URLRequest.setValue(self.CONTENT_TYPE,
+                            forHTTPHeaderField: self.KEY_CONTENT_TYPE)
+        
+        return self.excuteDataTaskPulisher(URLRequest: URLRequest,
+                                           params: queries)
+    }
+    
+    public func requestPost(endPoint: String,
+                            with params: [String: Any]) {
+        
+    }
+    
+    private func excuteDataTaskPulisher(URLRequest: URLRequest,
+                                        params: [String: Any]?) -> AnyPublisher<Data, Error> {
+        
+        return URLSession.shared.dataTaskPublisher(for: URLRequest)
             .tryMap() {
                 
                 element -> Data in
                 
-                if let json = try JSONSerialization.jsonObject(with: element.data, options: []) as? [String: Any] {
-                    
-                    self.printRequestInfo(urlString, "GET",
-                                          queries, false,
-                                          json, nil)
-                }
-                
-                
+                self.printRequestInfo(URLRequest.url?.description ?? "",
+                                      URLRequest.httpMethod ?? "",
+                                      params,
+                                      element.data,
+                                      (element.response as? HTTPURLResponse)?.statusCode)
                 
                 guard let httpResponse = element.response as? HTTPURLResponse else {
-                    
+                                        
                     throw NetworkError.failed(statusCode: 0,
                                               message: "")
                 }
@@ -69,13 +87,15 @@ extension Network: NetworkProtocol {
                     throw NetworkError.serverNotConnected
                 }
                 
+                guard 200...299 ~= httpResponse.statusCode else {
+                    
+                    throw NetworkError.failed(statusCode: httpResponse.statusCode,
+                                              message: "")
+                }
+                
                 return element.data
             }
             .eraseToAnyPublisher()
-    }
-    
-    public func requestPost(endPoint: String, params: [String: Any]) {
-        
     }
     
     private func changeQueryToString(_ queries: [String: Any]?) -> String {
@@ -102,8 +122,7 @@ extension Network {
     private func printRequestInfo(_ url: String,
                                   _ method: String,
                                   _ params: [String: Any]?,
-                                  _ result: Bool,
-                                  _ value: Any?,
+                                  _ data: Data,
                                   _ statusCode: Int?) {
         
         var message: String = "\n\n"
@@ -117,11 +136,16 @@ extension Network {
         message += "\n"
         message += "* PARAM : \(params?.description ?? "")"
         message += "\n"
-        message += "* STATUS : \(result ? "success" : "failure")"
-        message += "\n"
         message += "* STATUS CODE : \(statusCode ?? 0)"
-        message += "\n"        
-        message += "* RESPONSE : \n\(value.debugDescription)"
+        message += "\n"
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+            
+            message += "* RESPONSE : \n\(json.debugDescription)"
+        }
+        else {
+            
+            message += "* RESPONSE : \n\(data.debugDescription)"
+        }
         message += "\n"
         message += "/*————————————————-————————————————-————————————————-"
         message += "\n|                    RESPONSE END                     |"
@@ -130,7 +154,10 @@ extension Network {
     }
     
     // MARK: - Log
-    private func println<T>(_ object: T, _ file: String = #file, _ function: String = #function, _ line: Int = #line){
+    private func println<T>(_ object: T,
+                            _ file: String = #file,
+                            _ function: String = #function,
+                            _ line: Int = #line){
     #if DEBUG
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy HH:mm:ss:SSS"
