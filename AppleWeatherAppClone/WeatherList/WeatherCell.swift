@@ -17,7 +17,7 @@ class WeatherCell: UITableViewCell {
         self.placeNameLabel?.text = weather.name
         self.currentTimeLabel?.text = weather.dt
                                              .convertToDate(with: weather.timezone)
-                                             .convertToStringAtMonthAndDay()
+                                             .convertMonthAndDay()
         self.currentTempLabel?.text = "\(weather.tempInfo.currentCelsius)\(tempType.degree)"
         
         self.currentWeatherStateLabel?.text = weather.weather.first?.state ?? ""

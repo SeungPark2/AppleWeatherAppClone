@@ -9,17 +9,14 @@ import Foundation
 
 extension Int {
     
-    func convertToDate(with currentTimezone: Int) -> Date {
+    func convertToDate(with currentTimezone: Int) -> String {
         
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(abbreviation: )
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: currentTimezone)
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        let date = Date(
-        print(date)
-
-        return date
+        let date = Date(timeIntervalSince1970: TimeInterval(self))
         
-//        return Date(timeIntervalSince1970: TimeInterval(self))
+        return dateFormatter.string(from: date)
     }
-        }
+}

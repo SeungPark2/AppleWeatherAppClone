@@ -9,6 +9,7 @@ import Combine
 import Foundation
 
 enum NetworkError: Error {
+    
     case invalidURL
     case failed(statusCode: Int?, message: String?)
     case serverNotConnected
