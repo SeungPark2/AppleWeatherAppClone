@@ -15,6 +15,7 @@ class WeatherCell: UITableViewCell {
                   tempType: TempType) {
         
         self.placeNameLabel?.text = weather.name
+        self.currentWeatherStateLabel?.text = weather.weather.first?.state ?? ""
         
         if let dateTime = weather.dt,
            let timezone = weather.timezone {
@@ -27,11 +28,19 @@ class WeatherCell: UITableViewCell {
             self.currentTempLabel?.text = ""
         }
         
-//        self.currentTempLabel?.text = "\(weather.tempInfo.currentCelsius)\(tempType.degree)"
+        self.currentTempLabel?.text = tempType == .celsius ?
+                                      weather.tempInfo.celsius(of: .current) :
+                                      weather.tempInfo.fahrenheit(of: .current)
         
-        self.currentWeatherStateLabel?.text = weather.weather.first?.state ?? ""
-//        self.highAndLowTempLabel?.text = "최고: \(weather.tempInfo.maxCelsius)\(tempType.degree) " +
-//                                         "최저: \(weather.tempInfo.minCelsius)\(tempType.degree)"
+        let tempMax = tempType == .celsius ?
+                      weather.tempInfo.celsius(of: .max) :
+                      weather.tempInfo.fahrenheit(of: .max)
+        
+        let tempMin = tempType == .celsius ?
+                      weather.tempInfo.celsius(of: .min) :
+                      weather.tempInfo.fahrenheit(of: .min)
+        
+        self.highAndLowTempLabel?.text = "최고: \(tempMax) 최저: \(tempMin)"        
     }
     
     override func prepareForReuse() {

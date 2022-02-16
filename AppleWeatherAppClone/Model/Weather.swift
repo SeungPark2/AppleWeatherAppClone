@@ -12,7 +12,7 @@ struct WeatherInfo: Codable {
     let coord: Coordinate
     let weather: [Weather]
     @DefaultEmptyString var base: String
-    let tempInfo: Main
+    let tempInfo: TempInfo
     let visibility: Int?
     let wind: Wind
     let clouds: Clouds
@@ -52,7 +52,7 @@ struct Weather: Codable {
     }
 }
 
-struct Main: Codable {
+struct TempInfo: Codable {
     
     let temp: Double?
     let feelsLike: Double?
@@ -67,7 +67,45 @@ struct Main: Codable {
         case feelsLike = "feels_like"
         case tempMin   = "temp_min"
         case tempMax   = "temp_max"
-    }    
+    }
+    
+    func celsius(of strength: TempStrength) -> String {
+        
+        var temp: Double?
+        
+        switch strength {
+            
+            case .min:     temp = self.tempMin
+            case .current: temp = self.temp
+            case .max:     temp = self.tempMax
+        }
+        
+        guard let unwrappedTemp = temp else {
+            
+            return ""
+        }
+        
+        return "\(Int(unwrappedTemp - 273.15))\(TempType.degree)"
+    }
+    
+    func fahrenheit(of strength: TempStrength) -> String {
+        
+        var temp: Double?
+        
+        switch strength {
+            
+            case .min:     temp = self.tempMin
+            case .current: temp = self.temp
+            case .max:     temp = self.tempMax
+        }
+        
+        guard let unwrappedTemp = temp else {
+            
+            return ""
+        }
+        
+        return "\(Int(unwrappedTemp * 1.8) + 32)\(TempType.degree)"
+    }
 }
 
 struct Wind: Codable {

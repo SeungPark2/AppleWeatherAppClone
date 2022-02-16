@@ -21,7 +21,7 @@ extension TempType {
         return "\(self)"
     }
     
-    var degree: String {
+    static var degree: String {
         
         return "°"
     }
@@ -35,4 +35,11 @@ extension TempType {
             case .kelvin     : return "K"
         }
     }
+}
+
+enum TempStrength {
+    
+    case min
+    case current
+    case max
 }
