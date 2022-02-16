@@ -15,14 +15,23 @@ class WeatherCell: UITableViewCell {
                   tempType: TempType) {
         
         self.placeNameLabel?.text = weather.name
-        self.currentTimeLabel?.text = weather.dt
-                                             .convertToDate(with: weather.timezone)
-                                             .convertMonthAndDay()
-        self.currentTempLabel?.text = "\(weather.tempInfo.currentCelsius)\(tempType.degree)"
+        
+        if let dateTime = weather.dt,
+           let timezone = weather.timezone {
+            
+            self.currentTempLabel?.text = dateTime.convertToDate(with: timezone)
+                                                  .convertMonthAndDay()
+        }
+        else {
+            
+            self.currentTempLabel?.text = ""
+        }
+        
+//        self.currentTempLabel?.text = "\(weather.tempInfo.currentCelsius)\(tempType.degree)"
         
         self.currentWeatherStateLabel?.text = weather.weather.first?.state ?? ""
-        self.highAndLowTempLabel?.text = "최고: \(weather.tempInfo.maxCelsius)\(tempType.degree) " +
-                                         "최저: \(weather.tempInfo.minCelsius)\(tempType.degree)"
+//        self.highAndLowTempLabel?.text = "최고: \(weather.tempInfo.maxCelsius)\(tempType.degree) " +
+//                                         "최저: \(weather.tempInfo.minCelsius)\(tempType.degree)"
     }
     
     override func prepareForReuse() {

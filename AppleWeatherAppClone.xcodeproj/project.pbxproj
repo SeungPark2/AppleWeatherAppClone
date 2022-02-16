@@ -21,6 +21,7 @@
 		01659BDB27A156D4002C9FC0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01659BD927A156D4002C9FC0 /* Main.storyboard */; };
 		01659BDD27A156D5002C9FC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01659BDC27A156D5002C9FC0 /* Assets.xcassets */; };
 		01659BE027A156D5002C9FC0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01659BDE27A156D5002C9FC0 /* LaunchScreen.storyboard */; };
+		018D5D0527BD0A7500FB3057 /* DefaultEmptyString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018D5D0427BD0A7500FB3057 /* DefaultEmptyString.swift */; };
 		01A81B1127A38AB3003DB232 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A81B1027A38AB3003DB232 /* NetworkManager.swift */; };
 		01A81B1527AB44F1003DB232 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A81B1427AB44F1003DB232 /* Weather.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +43,7 @@
 		01659BDC27A156D5002C9FC0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01659BDF27A156D5002C9FC0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01659BE127A156D5002C9FC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		018D5D0427BD0A7500FB3057 /* DefaultEmptyString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultEmptyString.swift; sourceTree = "<group>"; };
 		01A81B1027A38AB3003DB232 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		01A81B1427AB44F1003DB232 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,6 +66,7 @@
 				0107ECBD27B47A7900753623 /* Int+Extension.swift */,
 				0136ED4D27B894FA007D4B66 /* String+Extension.swift */,
 				0136ED4F27B8B858007D4B66 /* Date+Extension.swift */,
+				018D5D0427BD0A7500FB3057 /* DefaultEmptyString.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				01659BD827A156D4002C9FC0 /* WeatherListViewController.swift in Sources */,
 				0136ED5027B8B858007D4B66 /* Date+Extension.swift in Sources */,
 				0136ED4727B51BBE007D4B66 /* LocationManager.swift in Sources */,
+				018D5D0527BD0A7500FB3057 /* DefaultEmptyString.swift in Sources */,
 				01659BD427A156D4002C9FC0 /* AppDelegate.swift in Sources */,
 				0107ECBE27B47A7A00753623 /* Int+Extension.swift in Sources */,
 				01A81B1127A38AB3003DB232 /* NetworkManager.swift in Sources */,
