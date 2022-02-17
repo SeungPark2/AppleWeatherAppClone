@@ -14,33 +14,33 @@ class WeatherCell: UITableViewCell {
     func updateUI(with weather: WeatherInfo,
                   tempType: TempType) {
         
-        self.placeNameLabel?.text = weather.name
-        self.currentWeatherStateLabel?.text = weather.weather.first?.state ?? ""
+        self.placeNameLabel?.text = weather.gu
+        self.currentWeatherStateLabel?.text = weather.current.weather.first?.description ?? ""
         
-        if let dateTime = weather.dt,
-           let timezone = weather.timezone {
+        if let dateTime = weather.current.time,
+           let timezone = weather.timezoneOffset {
             
-            self.currentTempLabel?.text = dateTime.convertToDate(with: timezone)
+            self.currentTimeLabel?.text = dateTime.convertToDate(with: timezone)
                                                   .convertMonthAndDay()
         }
         else {
             
-            self.currentTempLabel?.text = ""
+            self.currentTimeLabel?.text = ""
         }
         
         self.currentTempLabel?.text = tempType == .celsius ?
-                                      weather.tempInfo.celsius(of: .current) :
-                                      weather.tempInfo.fahrenheit(of: .current)
+                                      weather.celsius(of: .current) :
+                                      weather.fahrenheit(of: .current)
         
         let tempMax = tempType == .celsius ?
-                      weather.tempInfo.celsius(of: .max) :
-                      weather.tempInfo.fahrenheit(of: .max)
+                      weather.celsius(of: .max) :
+                      weather.fahrenheit(of: .max)
         
         let tempMin = tempType == .celsius ?
-                      weather.tempInfo.celsius(of: .min) :
-                      weather.tempInfo.fahrenheit(of: .min)
+                      weather.celsius(of: .min) :
+                      weather.fahrenheit(of: .min)
         
-        self.highAndLowTempLabel?.text = "최고: \(tempMax) 최저: \(tempMin)"        
+        self.highAndLowTempLabel?.text = "최고: \(tempMax) 최저: \(tempMin)"
     }
     
     override func prepareForReuse() {

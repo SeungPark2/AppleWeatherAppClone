@@ -19,8 +19,7 @@ class WeatherListViewModel {
     init() {
         
         self.currentWeatherWith(lat: LocationManager.shared.lat,
-                                lon: LocationManager.shared.lon)
-        
+                                lon: LocationManager.shared.lon)                
     }
     
     // MARK: -- Public Method
@@ -34,34 +33,44 @@ class WeatherListViewModel {
         
         self.isLoaded.send(true)
         
-        Network.shared.requestGet(EndPoint.weather,
+        Network.shared.requestGet(EndPoint.weatherOneCall,
                                   with: ["lat": lat,
                                          "lon": lon])
             .decode(type: WeatherInfo.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                
+
                 switch completion {
-                    
+
                     case .failure(let error):
-                        
+
                         print(error.localizedDescription)
                         print("Combine AnyPublisher Error")
-                        
+
                     case .finished:
-                        
+
                         print("Combine AnyPublisher Finish")
-                    
+
                 }
-                
-                self?.isLoaded.send(false)
-                
+
             }, receiveValue: {
-                
+
                 [weak self] weatherInfo in
+
+                var weather = weatherInfo
                 
-                self?.weathers = [weatherInfo]
-                
+                LocationManager.shared.locationName(lat: weatherInfo.lat,
+                                                    lon: weatherInfo.lon) {
+                    
+                    city, gu in
+                    
+                    weather.city = city
+                    weather.gu = gu
+
+                    self?.isLoaded.send(false)
+                    self?.weathers.append(weather)
+                }
+               
                 print("Combine AnyPublisher")
             })
             .store(in: &self.cancellable)

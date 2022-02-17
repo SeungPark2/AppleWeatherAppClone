@@ -34,7 +34,7 @@ class WeatherListViewController: UIViewController {
         searchController.searchBar.placeholder = "도시 또는 공항 검색"
         searchController.searchBar.setValue("취소",
                                             forKey: "cancelButtonText")
-        searchController.searchBar.tintColor = .blue
+        searchController.searchBar.tintColor = .white
         self.navigationItem.searchController = searchController
         
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -108,15 +108,32 @@ extension WeatherListViewController: UITableViewDelegate,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WeatherCell.identifier,
-                                                       for: indexPath) as? WeatherCell else {
+                                                       for: indexPath) as? WeatherCell,
+              let weather = self.viewModel.weathers[safe: indexPath.row] else {
             
             return UITableViewCell()
         }
         
-        cell.updateUI(with: self.viewModel.weathers[indexPath.row],
+        cell.updateUI(with: weather,
                       tempType: .celsius)
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+     
+        guard let weather = self.viewModel.weathers[safe: indexPath.row] else {
+            
+            return
+        }
+        
+        if let weatherDetail = storyboard?.instantiateViewController(withIdentifier: StoryboardIdentifier.weatherDetail.rawValue) as? WeatherDetailVC {
+            
+            weatherDetail.weatherInfo = weather
+            
+            self.navigationController?.pushViewController(weatherDetail,
+                                                          animated: true)
+        }
+    }
 }

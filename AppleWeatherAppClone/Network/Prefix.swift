@@ -14,5 +14,5 @@ struct Server {
 
 struct EndPoint {
     
-    static let weather: String = "/weather"
+    static let weatherOneCall: String = "/onecall"
 }

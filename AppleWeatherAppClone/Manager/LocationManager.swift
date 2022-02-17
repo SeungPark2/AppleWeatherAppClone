@@ -24,6 +24,26 @@ class LocationManager: NSObject {
         set { self.longitude = newValue }
     }
     
+    func locationName(lat: Double?,
+                      lon: Double?,
+                      completion: @escaping (_ city: String, _ gu: String) -> Void) {
+        
+        guard let lat = lat,
+              let lon = lon else {
+                                    
+            return completion("", "")
+        }
+        
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: lat,
+                                                       longitude: lon)) {
+            
+            placemark, error in
+            
+            completion(placemark?.first?.administrativeArea ?? "",
+                       placemark?.first?.locality ?? "")
+        }
+    }
+    
     private var latitude: Double?
     private var longitude: Double?
     
