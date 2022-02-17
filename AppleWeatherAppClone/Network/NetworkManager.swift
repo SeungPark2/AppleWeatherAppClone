@@ -40,7 +40,7 @@ extension Network: NetworkProtocol {
                     with queries: [String: Any]?) -> AnyPublisher<Data, Error> {
         
         let urlString: String = Server.url +
-                                EndPoint.weather +
+                                EndPoint.weatherOneCall +
                                 self.changeQueryToString(queries)
         
         guard let url = URL(string: urlString) else {
@@ -71,11 +71,11 @@ extension Network: NetworkProtocol {
                 
                 element -> Data in
                 
-                self.printRequestInfo(URLRequest.url?.description ?? "",
-                                      URLRequest.httpMethod ?? "",
-                                      params,
-                                      element.data,
-                                      (element.response as? HTTPURLResponse)?.statusCode)
+//                self.printRequestInfo(URLRequest.url?.description ?? "",
+//                                      URLRequest.httpMethod ?? "",
+//                                      params,
+//                                      element.data,
+//                                      (element.response as? HTTPURLResponse)?.statusCode)
                 
                 guard let httpResponse = element.response as? HTTPURLResponse else {
                                         

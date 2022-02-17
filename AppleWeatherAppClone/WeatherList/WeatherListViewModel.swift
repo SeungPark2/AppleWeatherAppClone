@@ -18,14 +18,14 @@ class WeatherListViewModel {
     
     init() {
         
-        self.currentWeatherWith(lat: LocationManager.shared.lat,
-                                lon: LocationManager.shared.lon)                
+        self.requestWeatherInfoWith(lat: LocationManager.shared.lat,
+                                    lon: LocationManager.shared.lon)
     }
     
     // MARK: -- Public Method
     
-    func currentWeatherWith(lat: Double?,
-                            lon: Double?) {
+    func requestWeatherInfoWith(lat: Double?,
+                                lon: Double?) {
         
         guard let lat = lat, let lon = lon else {
             return
